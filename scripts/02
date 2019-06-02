@@ -1,0 +1,8 @@
+#!/bin/bash
+echo 'deb http://ftp.ua.debian.org/debian/ debian stable main contrib' > /etc/apt/sources.list.d/base.list
+echo 'deb-src http://ftp.ua.debian.org/debian/ debian stable main contrib' >> /etc/apt/sources.list.d/base.list
+sudo apt-get update >> /var/log/update_script.log
+sudo apt-get upgrade >> /var/log/update_script.log
+(crontab -l 2>/dev/null; echo "0 4 * * 1 /scripts/sh 02") | crontab -
+
+# or by editing: crontab -e

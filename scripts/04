@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ ! -f /var/log/original_checksum.log ]; then
+   md5sum /etc/crontab > /var/log/original_checksum.log
+fi
+md5sum /etc/crontab > /var/log/checksum2compare.log
+file1='/var/log/original_checksum.log'
+file2='/var/log/checksum2compare.log'
+if cmp -s "$file1" "$file2"
+then
+	md5sum /etc/crontab > /var/log/original_checksum.log
+else
+	echo "file in subject of this mail has been modified" | mail -s "/etc/crontab" mr.bratchenko@gmail.com
+	md5sum /etc/crontab > /var/log/original_checksum.log
+fi
+(crontab -l 2>/dev/null; echo "0 0 * * * /scripts/sh 04") | crontab -
+
+# or by editing: crontab -e
